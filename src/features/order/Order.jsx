@@ -10,7 +10,7 @@ import {
   formatDate,
 } from '../../utils/helpers';
 import { useEffect } from 'react';
-import UpdateOrder from './UpdateOrder';
+import { createNewOrder, getAllOrders } from '../../services/menuService';
 
 function Order() {
   const order = useLoaderData();
@@ -35,6 +35,16 @@ function Order() {
   } = order;
 
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
+
+  let sum = 0;
+  cart.forEach((element) => {
+    return (sum += element.totalPrice);
+  });
+
+  console.log(order, 'order CIJO');
+
+  createNewOrder({ id: 500, created_at: new Date(), order_items: [{}] });
+  getAllOrders();
 
   return (
     <div className="space-y-8 px-4 py-6">
@@ -79,20 +89,8 @@ function Order() {
       </ul>
 
       <div className="space-y-2 bg-stone-200 px-6 py-5">
-        <p className="text-sm font-medium text-stone-600">
-          Price pizza: {formatCurrency(orderPrice)}
-        </p>
-        {priority && (
-          <p className="text-sm font-medium text-stone-600">
-            Price priority: {formatCurrency(priorityPrice)}
-          </p>
-        )}
-        <p className="font-bold">
-          To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
-        </p>
+        <p className="font-bold">To pay on delivery: {formatCurrency(sum)}</p>
       </div>
-
-      {!priority && <UpdateOrder order={order} />}
     </div>
   );
 }
