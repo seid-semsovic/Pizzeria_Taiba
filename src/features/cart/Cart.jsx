@@ -12,6 +12,8 @@ function Cart() {
 
   if (!cart.length) return <EmptyCart />;
 
+  console.log(cart, 'cart');
+
   return (
     <div className="px-4 py-3">
       <LinkButton to="/menu">&larr; Back to menu</LinkButton>

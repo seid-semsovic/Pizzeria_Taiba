@@ -8,6 +8,7 @@ import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
 import store from '../../store';
 import { formatCurrency } from '../../utils/helpers';
 import { fetchAddress } from '../user/userSlice';
+import { createNewOrder } from '../../services/menuService';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -157,7 +158,7 @@ export async function action({ request }) {
     priority: data.priority === 'true',
   };
 
-  console.log(order);
+  console.log(order, 'haaaaaaa');
 
   const errors = {};
   if (!isValidPhone(order.phone))
@@ -167,7 +168,9 @@ export async function action({ request }) {
   if (Object.keys(errors).length > 0) return errors;
 
   // If everything is okay, create new order and redirect
-  const newOrder = await createOrder(order);
+  // const newOrder = await createOrder(order);
+
+  createNewOrder(order);
 
   // Do NOT overuse
   store.dispatch(clearCart());

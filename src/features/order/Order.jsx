@@ -2,6 +2,7 @@
 import { useFetcher, useLoaderData } from 'react-router-dom';
 
 import OrderItem from './OrderItem';
+import { v4 as uuid } from 'uuid';
 
 import { getOrder } from '../../services/apiRestaurant';
 import {
@@ -9,12 +10,17 @@ import {
   formatCurrency,
   formatDate,
 } from '../../utils/helpers';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { createNewOrder, getAllOrders } from '../../services/menuService';
 
 function Order() {
   const order = useLoaderData();
   const fetcher = useFetcher();
+
+  const unique_id = uuid();
+
+  // Get first 8 characters using slice
+  const small_id = unique_id.slice(0, 8);
 
   useEffect(
     function () {
@@ -36,15 +42,26 @@ function Order() {
 
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
+  console.log(order, 'order');
+
   let sum = 0;
   cart.forEach((element) => {
     return (sum += element.totalPrice);
   });
 
-  console.log(order, 'order CIJO');
-
-  createNewOrder({ id: 500, created_at: new Date(), order_items: [{}] });
+  createNewOrder({
+    id: small_id,
+    created_at: new Date(),
+    order_items: cart,
+    name: 'Seid',
+    phone_number: 8627382,
+    last_name: 'Semsovic',
+    adress: 'palih boraca 14',
+    delivery: false,
+  });
   getAllOrders();
+
+  console.log(fetcher.data, 'fetcher');
 
   return (
     <div className="space-y-8 px-4 py-6">

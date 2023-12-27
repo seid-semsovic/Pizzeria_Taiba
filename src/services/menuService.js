@@ -22,6 +22,7 @@ export async function createNewOrder(newOrder) {
 
   return data;
 }
+
 export async function getAllOrders() {
   let { data: orders, error } = await supabase.from('order').select('*');
 
